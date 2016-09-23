@@ -1,0 +1,3 @@
+14/9: 
+Ändrade elementWiseProduct(). Från int number_of_columns_m1 = matrix1[0].length; -> int number_of_columns_m1 = matrix1.length; 
+Ger nu vettigare size på storlekarna på matriserna. Fortfarande en 2D array.
