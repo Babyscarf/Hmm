@@ -15,11 +15,12 @@ public class Viterbi {
 	Scanner sc;
 	int row;
 	int column;
+	double[][] delta_matrix;
 	double[][] delta;
-	double[][] delta_1;
-	double[][] delta_temporary;
+	double[][] delta_mult_matrix;
 	double[][] max_vector;
 	int[][] max_vector_index;
+	int[][] delta_transition_matrix;
 	
 
 
@@ -48,10 +49,11 @@ public class Viterbi {
 		pi = new double[][] { { 0.5, 0.0, 0.0, 0.5 } };
 		observations = new int[] {2,0,3,1};
 		//System.out.println(observations.length);
-		delta_1 = new double[1][observations.length];
-		delta = new double[a.length][observations.length];
+		delta = new double[1][observations.length];
+		delta_matrix = new double[observations.length][a.length];
 		max_vector = new double[1][observations.length];
 		max_vector_index = new int[1][observations.length];
+		delta_transition_matrix = new int[observations.length][a.length];
 		
 		/*Read input from Kattis*/
 //		row = sc.nextInt();
@@ -79,25 +81,25 @@ public class Viterbi {
 		/* Calculations of alpha_t(i)
 		 * equations 2.9 - 2.14 in the lab manual*/
 		
-		System.out.println("pi: " + Arrays.deepToString(pi));
-		delta_1 = hmm_methods.elementWiseProduct(pi, b, observations[0]); // Base case: init alpha_1(i)
-		hmm_methods.maxToMatrix(delta_1, delta, 0); // HÅRDKODAT
-		//System.out.println("delta_1: " + Arrays.deepToString(delta));
+		//System.out.println("pi: " + Arrays.deepToString(pi));
+		delta = hmm_methods.elementWiseProduct(pi, b, observations[0]); // Base case: init delta_1(i)
+		hmm_methods.findMax(delta,max_vector, max_vector_index);
+		hmm_methods.maxToMatrix(delta, delta_matrix, max_vector_index, delta_transition_matrix, 0); // HÅRDKODAT, ok eftersom bara för basfallet?
 		
-		delta_temporary = hmm_methods.multViterbiMatrix(delta_1, a, b, observations[1]); // HÅRDKODAT observations[1], ska vara [i]
-		hmm_methods.findMax(delta_temporary, max_vector, max_vector_index);
-		delta = hmm_methods.maxToMatrix(max_vector, delta, 1);
-		System.out.println("delta_uppdaterad: " + Arrays.deepToString(delta));
-	//	System.out.println("max_vector: " + Arrays.toString(max_vector) + "max_vector_index: " + Arrays.toString(max_vector_index));
-		//System.out.println("delta_temporary: " + Arrays.deepToString(delta_temporary));
-//		if(observations.length>1){
-//		 for (int i = 1; i < observations.length; i++) {
-//			int observation_index = observations[i];
-//
-//			alpha_summation = hmm_methods.multMatrix(alpha, a); // part of Eq 2.12
-//			
-//			alpha = hmm_methods.elementWiseProduct(alpha_summation, b, observation_index); // last part of Eq 2.12: b_i(o_t)
-//		}
+		for(int i = 1; i < observations.length; i++){
+			int observation_index = observations[i];
+			delta_mult_matrix = hmm_methods.multViterbiMatrix(delta, a, b, observation_index); // HÅRDKODAT observations[1], ska vara [i]
+			hmm_methods.findMax(delta_mult_matrix, max_vector, max_vector_index);
+			
+			delta = max_vector;
+			hmm_methods.maxToMatrix(delta, delta_matrix, max_vector_index, delta_transition_matrix, i);
+			
+			}
+			System.out.println("delta_matrix: " + Arrays.deepToString(delta_matrix));
+			System.out.println("delta_transition_matrix: " + Arrays.deepToString(delta_transition_matrix));
+			hmm_methods.findMaxSolution(delta_matrix, delta_transition_matrix, max_vector_index);
+			System.out.println("Sequence of states: " + Arrays.deepToString(max_vector_index));
+			hmm_methods.writeAnswer(max_vector_index);
 		 
 
 	}
