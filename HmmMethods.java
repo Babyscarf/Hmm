@@ -1,3 +1,4 @@
+
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -110,7 +111,7 @@ public class HmmMethods {
 			// System.out.println("max_value = " +max_vector[i] );
 			// System.out.println("max_index = " + delta_state_index[i]);
 			}
-		System.out.println();
+		//System.out.println();
 
 	}
 
@@ -161,16 +162,17 @@ public class HmmMethods {
 		double max;
 		
 		
-		for (int i = 0; i < delta_matrix.length; i++) {
+		for (int i = 1; i < delta_matrix.length; i++) {
 			max = -1;
 			for (int j = 0; j < delta_matrix[0].length; j++) {
 				double temp = delta_matrix[i][j];
 				if (temp > max) {
 					// System.out.println("temp = " + temp);
-					//max = temp;
+					max = temp;
 					//max_index = j;
-					//System.out.println("        "+delta_state_matrix[i][max_index]);
+					//System.out.println("findMaxSolution="+delta_state_matrix[i][j]);
 					delta_state_index[0][i] = j;
+							//delta_state_matrix[i][j];
 //					System.out.println("max_index = " + "[" + i + "]" + "[" + j
 //							+ "]");
 //					 System.out.println("maxLoop = " + max);
@@ -182,9 +184,10 @@ public class HmmMethods {
 			// System.out.println("max_value = " +max_vector[i] );
 			// System.out.println("max_index = " + delta_state_index[i]);
 			}
-		System.out.println();
+	//	System.out.println();
 		
 		
 	}
 
 }
+
