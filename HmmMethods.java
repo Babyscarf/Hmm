@@ -167,14 +167,15 @@ public class HmmMethods {
 				double temp = delta_matrix[i][j];
 				if (temp > max) {
 					// System.out.println("temp = " + temp);
-					max = temp;
-					max_index = j;
-					System.out.println("        "+delta_state_matrix[i][max_index]);
+					//max = temp;
+					//max_index = j;
+					//System.out.println("        "+delta_state_matrix[i][max_index]);
+					delta_state_index[0][i] = j;
 //					System.out.println("max_index = " + "[" + i + "]" + "[" + j
 //							+ "]");
 //					 System.out.println("maxLoop = " + max);
 				}
-				delta_state_index[0][i] = delta_state_matrix[i][max_index];
+				
 			}
 			//delta_state_index[0][i] = max;
 			//delta_state_index[0][i] = max_index;
